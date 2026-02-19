@@ -3,8 +3,6 @@
 //! Contains the `ProtocolState` struct and its construction from protocol
 //! accounts.
 
-use anchor_client::solana_sdk::clock::{Clock, UnixTimestamp};
-use anchor_lang::AccountDeserialize;
 use anyhow::{anyhow, Result};
 use hylo_core::exchange_context::ExchangeContext;
 use hylo_core::fee_controller::{LevercoinFees, StablecoinFees};
@@ -17,11 +15,9 @@ use hylo_core::stability_mode::StabilityController;
 use hylo_core::total_sol_cache::TotalSolCache;
 use hylo_idl::tokens::{TokenMint, HYLOSOL, JITOSOL};
 use pyth_solana_receiver_sdk::price_update::PriceUpdateV2;
-use solana_program_pack::Pack;
 use spl_token_interface::state::{Account as TokenAccount, Mint};
 
-use crate::protocol_state::ProtocolAccounts;
-use crate::LST;
+use crate::quotes::LST;
 
 /// Complete snapshot of Hylo protocol state
 #[derive(Clone)]
@@ -54,7 +50,7 @@ pub struct ProtocolState<C: SolanaClock> {
   pub xsol_pool: TokenAccount,
 
   /// Timestamp of when this state was fetched
-  pub fetched_at: UnixTimestamp,
+  pub fetched_at: i64,
 
   /// LST swap configuration
   pub lst_swap_config: LstSwapConfig,
@@ -131,57 +127,57 @@ impl<C: SolanaClock> ProtocolState<C> {
   }
 }
 
-impl TryFrom<&ProtocolAccounts> for ProtocolState<Clock> {
-  type Error = anyhow::Error;
+// impl TryFrom<&ProtocolAccounts> for ProtocolState<Clock> {
+//   type Error = anyhow::Error;
 
-  /// Build `ProtocolState` from protocol accounts
-  ///
-  /// # Errors
-  /// Returns error if any account fails deserialization.
-  fn try_from(accounts: &ProtocolAccounts) -> Result<Self> {
-    let hylo = Hylo::try_deserialize(&mut accounts.hylo.data.as_slice())?;
+//   /// Build `ProtocolState` from protocol accounts
+//   ///
+//   /// # Errors
+//   /// Returns error if any account fails deserialization.
+//   fn try_from(accounts: &ProtocolAccounts) -> Result<Self> {
+//     let hylo = Hylo::try_deserialize(&mut accounts.hylo.data.as_slice())?;
 
-    let jitosol_header =
-      LstHeader::try_deserialize(&mut accounts.jitosol_header.data.as_slice())?;
+//     let jitosol_header =
+//       LstHeader::try_deserialize(&mut accounts.jitosol_header.data.as_slice())?;
 
-    let hylosol_header =
-      LstHeader::try_deserialize(&mut accounts.hylosol_header.data.as_slice())?;
+//     let hylosol_header =
+//       LstHeader::try_deserialize(&mut accounts.hylosol_header.data.as_slice())?;
 
-    let hyusd_mint = Mint::unpack(&mut accounts.hyusd_mint.data.as_slice())?;
+//     let hyusd_mint = Mint::unpack(&mut accounts.hyusd_mint.data.as_slice())?;
 
-    let shyusd_mint = Mint::unpack(&mut accounts.shyusd_mint.data.as_slice())?;
+//     let shyusd_mint = Mint::unpack(&mut accounts.shyusd_mint.data.as_slice())?;
 
-    let xsol_mint = Mint::unpack(&mut accounts.xsol_mint.data.as_slice())?;
+//     let xsol_mint = Mint::unpack(&mut accounts.xsol_mint.data.as_slice())?;
 
-    let pool_config =
-      PoolConfig::try_deserialize(&mut accounts.pool_config.data.as_slice())?;
+//     let pool_config =
+//       PoolConfig::try_deserialize(&mut accounts.pool_config.data.as_slice())?;
 
-    let hyusd_pool =
-      TokenAccount::unpack(&mut accounts.hyusd_pool.data.as_slice())?;
+//     let hyusd_pool =
+//       TokenAccount::unpack(&mut accounts.hyusd_pool.data.as_slice())?;
 
-    let xsol_pool =
-      TokenAccount::unpack(&mut accounts.xsol_pool.data.as_slice())?;
+//     let xsol_pool =
+//       TokenAccount::unpack(&mut accounts.xsol_pool.data.as_slice())?;
 
-    let sol_usd = PriceUpdateV2::try_deserialize(
-      &mut accounts.sol_usd_pyth.data.as_slice(),
-    )
-    .map_err(|e| anyhow!("Failed to deserialize Pyth: {e}"))?;
+//     let sol_usd = PriceUpdateV2::try_deserialize(
+//       &mut accounts.sol_usd_pyth.data.as_slice(),
+//     )
+//     .map_err(|e| anyhow!("Failed to deserialize Pyth: {e}"))?;
 
-    let clock: Clock = bincode::deserialize(&accounts.clock.data)
-      .map_err(|e| anyhow!("Failed to deserialize clock: {e}"))?;
+//     let clock: Clock = bincode::deserialize(&accounts.clock.data)
+//       .map_err(|e| anyhow!("Failed to deserialize clock: {e}"))?;
 
-    Self::build(
-      clock,
-      &hylo,
-      jitosol_header,
-      hylosol_header,
-      hyusd_mint,
-      xsol_mint,
-      shyusd_mint,
-      pool_config,
-      hyusd_pool,
-      xsol_pool,
-      &sol_usd,
-    )
-  }
-}
+//     Self::build(
+//       clock,
+//       &hylo,
+//       jitosol_header,
+//       hylosol_header,
+//       hyusd_mint,
+//       xsol_mint,
+//       shyusd_mint,
+//       pool_config,
+//       hyusd_pool,
+//       xsol_pool,
+//       &sol_usd,
+//     )
+//   }
+// }

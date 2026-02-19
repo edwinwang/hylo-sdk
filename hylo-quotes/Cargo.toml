@@ -9,7 +9,6 @@ homepage.workspace = true
 [dependencies]
 anchor-client.workspace = true
 anchor-lang.workspace = true
-anchor-spl.workspace = true
 anyhow.workspace = true
 async-trait.workspace = true
 bincode.workspace = true
@@ -20,6 +19,8 @@ hylo-idl.workspace = true
 pyth-solana-receiver-sdk.workspace = true
 serde.workspace = true
 tokio.workspace = true
+solana-program-pack.workspace = true
+spl-token-interface.workspace = true
 
 [dev-dependencies]
 base64.workspace = true
