@@ -8,7 +8,7 @@ use jupiter_amm_interface::{
   AccountMap, ClockRef, Quote, SwapMode, SwapParams,
 };
 use rust_decimal::Decimal;
-use solana_program_pack::{IsInitialized, Pack};
+use anchor_lang::solana_program::program_pack::{IsInitialized, Pack};
 
 use crate::quotes::{
   token_operation::{OperationOutput, TokenOperation, TokenOperationExt},
@@ -81,7 +81,7 @@ where
 /// * Account not found in map
 /// * Deserialization to `A` fails
 pub fn account_map_get<A: AccountDeserialize>(
-  account_map: &AccountMap,
+  account_map: &dyn AccountMap,
   key: &Pubkey,
 ) -> Result<A> {
   let account = account_map
@@ -93,7 +93,7 @@ pub fn account_map_get<A: AccountDeserialize>(
 }
 
 pub fn account_spl_get<A: Pack + IsInitialized>(
-  account_map: &AccountMap,
+  account_map: &dyn AccountMap,
   key: &Pubkey,
 ) -> Result<A> {
   let account = account_map

@@ -16,7 +16,7 @@ hylo-fix.workspace = true
 hylo-idl = { workspace = true, optional = true }
 jupiter-amm-interface = { workspace = true, optional = true }
 pyth-solana-receiver-sdk.workspace = true
-spl-token-interface.workspace = true
+spl-token.workspace = true
 
 [dev-dependencies]
 proptest.workspace = true

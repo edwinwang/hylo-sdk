@@ -15,7 +15,7 @@ use hylo_core::stability_mode::StabilityController;
 use hylo_core::total_sol_cache::TotalSolCache;
 use hylo_idl::tokens::{TokenMint, HYLOSOL, JITOSOL};
 use pyth_solana_receiver_sdk::price_update::PriceUpdateV2;
-use spl_token_interface::state::{Account as TokenAccount, Mint};
+use spl_token::state::{Account as TokenAccount, Mint};
 
 use crate::quotes::LST;
 

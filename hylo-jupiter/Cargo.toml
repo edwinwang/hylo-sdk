@@ -15,7 +15,6 @@ hylo-idl.workspace = true
 jupiter-amm-interface.workspace = true
 pyth-solana-receiver-sdk.workspace = true
 rust_decimal.workspace = true
-spl-token-interface.workspace = true
-solana-program-pack.workspace = true
+spl-token.workspace = true
 
 [dev-dependencies]

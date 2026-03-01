@@ -4,7 +4,7 @@ use anchor_lang::prelude::Pubkey;
 use anchor_lang::solana_program::instruction::{AccountMeta, Instruction};
 use anchor_lang::{system_program, InstructionData, ToAccountMetas};
 use anchor_spl::{associated_token, token};
-use solana_address_lookup_table_interface::program as address_lookup_table;
+use anchor_lang::solana_program::address_lookup_table::program as address_lookup_table;
 
 use crate::exchange::account_builders;
 use crate::exchange::client::{accounts, args};

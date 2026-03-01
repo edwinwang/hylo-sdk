@@ -2,8 +2,17 @@ use std::sync::LazyLock;
 
 use anchor_lang::prelude::Pubkey;
 use anchor_lang::solana_program::pubkey;
-use solana_address_lookup_table_interface::program as address_lookup_table;
-use solana_loader_v3_interface::get_program_data_address;
+use anchor_lang::solana_program::address_lookup_table::program as address_lookup_table;
+use anchor_lang::solana_program::bpf_loader_upgradeable;
+
+/// Derives the program data address for an upgradeable BPF program.
+fn get_program_data_address(program_id: &Pubkey) -> Pubkey {
+    Pubkey::find_program_address(
+        &[program_id.as_ref()],
+        &bpf_loader_upgradeable::id(),
+    )
+    .0
+}
 
 use crate::tokens::{TokenMint, HYUSD, SHYUSD, XSOL};
 use crate::{exchange, stability_pool};
